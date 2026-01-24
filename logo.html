@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Design - Naseef CS</title>
+    <meta name="description"
+        content="Explore the diverse design portfolio of Naseef CS, featuring Logo Design projects.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        header {
+            padding-top: 120px;
+            text-align: center;
+            padding-bottom: 3rem;
+        }
+
+        .work-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: white;
+            font-weight: 700;
+        }
+
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .filter-tab.active,
+        .filter-tab:hover {
+            background: var(--accent-purple);
+            color: white;
+            border-color: var(--accent-purple);
+        }
+
+        .work-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        .featured-header-card {
+            background: linear-gradient(135deg, #2a0e4e, #130822);
+            border-radius: 20px;
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4rem;
+            border: 1px solid rgba(140, 82, 255, 0.3);
+            box-shadow: 0 0 30px rgba(140, 82, 255, 0.1);
+        }
+
+        .header-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .header-icon {
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">Naseef CS</div>
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#services">Services</a></li>
+            <li><a href="index.html#projects">Projects</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <header class="work-header">
+        <div class="work-container">
+            <h2>Work Experience</h2>
+
+            <div class="filter-tabs">
+                <button class="filter-tab" onclick="window.location.href='work.html'">UI/UX</button>
+                <button class="filter-tab" onclick="window.location.href='poster.html'">Poster</button>
+                <button class="filter-tab" onclick="window.location.href='package.html'">Package</button>
+                <button class="filter-tab active" onclick="window.location.href='logo.html'">Logo</button>
+                <button class="filter-tab" onclick="window.location.href='mobile.html'">Mobile</button>
+                <button class="filter-tab" onclick="window.location.href='other.html'">Other</button>
+            </div>
+
+            <div class="featured-header-card">
+                <div class="header-info">
+                    <h3>Logo Design</h3>
+                    <p>Memorable and timeless branding identities.</p>
+                </div>
+                <div class="header-icons">
+                    <div class="header-icon" style="background: linear-gradient(45deg, #d35400, #e67e22);">✒️</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="work-container">
+        <div class="project-card product-web">
+            <div class="project-info">
+                <span class="project-tag">Logo</span>
+                <h3>Coming Soon</h3>
+                <p>Logo design projects will be showcased here.</p>
+            </div>
+            <div class="project-image">
+                <div class="img-placeholder" style="font-size: 4rem; background: #2a0e4e; color: white;">✒️</div>
+            </div>
+        </div>
+    </main>
+
+    <footer id="contact">
+        <div class="footer-content">
+            <!-- Left Column: Info & Social -->
+            <div class="contact-info-col">
+                <h3>Contact Now</h3>
+                <p class="footer-bio">"As a freelance UI/UX designer and graphic designer, I'm seeking opportunities to
+                    join forward-thinking teams that value accessible design and creating solutions that truly enhance
+                    people's lives."</p>
+                <a href="mailto:naseefCS@gmail.com" class="email-link">naseefcs@gmail.com</a>
+                <div class="social-links-grid">
+                    <a href="https://www.instagram.com/na.x_eef?igsh=ZDloaTIxOW8wczhs" target="_blank"
+                        class="social-item">
+                        <i class="fab fa-instagram"></i>
+                        <span>INSTAGRAM</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/naseef-c-s-523863380?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+                        target="_blank" class="social-item">
+                        <i class="fab fa-linkedin-in"></i>
+                        <span>LINKEDIN</span>
+                    </a>
+                    <a href="https://share.google/YLvMTiZ7752tnhDUZ" target="_blank" class="social-item">
+                        <i class="fab fa-behance"></i>
+                        <span>BEHANCE</span>
+                    </a>
+                    <a href="https://www.fiverr.com/s/NNmxRyZ" target="_blank" class="social-item">
+                        <i class="font-icon">fi</i>
+                        <span>FIVERR</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right Column: Contact Form -->
+            <div class="contact-form-col">
+                <form class="contact-form">
+                    <input type="text" placeholder="Full Name" class="form-input">
+                    <input type="text" placeholder="Mail Or Number" class="form-input">
+                    <textarea placeholder="Message" class="form-input form-textarea"></textarea>
+                    <button type="submit" class="form-btn">Send This Message</button>
+                </form>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
