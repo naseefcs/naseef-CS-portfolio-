@@ -233,12 +233,27 @@
 
             <!-- Right Column: Contact Form -->
             <div class="contact-form-col">
-                <form class="contact-form">
-                    <input type="text" placeholder="Full Name" class="form-input">
-                    <input type="text" placeholder="Mail Or Number" class="form-input">
-                    <textarea placeholder="Message" class="form-input form-textarea"></textarea>
+                <form class="contact-form"
+                    action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSerWLT3DXi_jGW23YYp6hgRJln1K2mR8xabdcBe8-Updh3KAw/formResponse"
+                    method="POST" target="hidden_iframe" id="contactForm" onsubmit="submitted=true;">
+                    <input type="text" name="entry.149737699" placeholder="Full Name" class="form-input" required>
+                    <input type="text" name="entry.1090223172" placeholder="Mail Or Number" class="form-input" required>
+                    <textarea name="entry.1182831045" placeholder="Message" class="form-input form-textarea"
+                        required></textarea>
                     <button type="submit" class="form-btn">Send This Message</button>
                 </form>
+                <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"
+                    onload="if(window.submitted) {showPopup();}"></iframe>
+            </div>
+        </div>
+
+        <!-- Confirmation Popup -->
+        <div id="confirmation-popup" class="popup-overlay">
+            <div class="popup-content">
+                <i class="fas fa-check-circle success-icon"></i>
+                <h3>Thank You!</h3>
+                <p>Your message has been sent successfully.</p>
+                <button class="close-popup-btn" onclick="closePopup()">Close</button>
             </div>
         </div>
     </footer>

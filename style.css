@@ -770,29 +770,85 @@ footer {
         font-size: 1.1rem;
     }
 
-    /* Projects Stacking */
+    /* Projects Stacking - Redesign based on Reference */
     .project-card,
     .project-card:nth-child(even) {
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: 1fr;
         height: auto;
+        padding: 2.5rem 1.5rem;
+        background: #130822;
+        /* Dark card bg */
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        gap: 1.5rem;
     }
 
-    .project-image {
-        width: 100%;
-        height: 250px;
-        min-height: 250px;
-    }
-
+    /* Flatten project-info to reorder children */
     .project-info,
     .project-card:nth-child(even) .project-info {
-        width: 100%;
-        text-align: center;
-        align-items: center;
-        padding: 2.5rem 1.5rem;
+        display: contents;
+        /* Allows children to be part of the parent grid */
+        padding: 0;
     }
 
+    /* Reordering Elements */
+    /* 1. Tag (Top Left) */
+    .project-tag {
+        order: 1;
+        margin-bottom: 0;
+        text-align: left;
+        /* Aligned left as per image */
+        font-size: 0.9rem;
+        width: 100%;
+        color: var(--accent-purple);
+    }
+
+    /* 2. Image (Middle) */
+    .project-image {
+        order: 2;
+        width: 100%;
+        height: auto;
+        min-height: 220px;
+        border-radius: 15px;
+        /* Smaller radius for inner image */
+        margin-bottom: 1rem;
+    }
+
+    /* 3. Title (Below Image) */
     .project-info h3 {
+        order: 3;
         text-align: center;
+        margin-bottom: 0.5rem;
+        font-size: 2rem;
+        /* Large and bold */
+        text-transform: uppercase;
+    }
+
+    /* 4. Description (Below Title) */
+    .project-info p {
+        order: 4;
+        text-align: center;
+        margin: 0 auto 1.5rem;
+        width: 100%;
+        font-size: 1rem;
+        color: #ddd;
+        /* Lighter text */
+    }
+
+    /* 5. Meta/Badges (Bottom) */
+    .project-meta {
+        order: 5;
+        justify-content: center;
+        margin-bottom: 0;
+    }
+
+    /* 6. Button (Very Bottom) */
+    .project-btn {
+        order: 6;
+        width: 100%;
+        text-align: center;
+        margin-top: 1rem;
     }
 
     /* Services Grid */
@@ -1360,4 +1416,82 @@ footer {
     .contact-form-col {
         justify-content: flex-start;
     }
+}
+
+/* Confirmation Popup */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    backdrop-filter: blur(5px);
+}
+
+.popup-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.popup-content {
+    background: #1a0b2e;
+    /* Dark purple/black matching theme */
+    padding: 2.5rem;
+    border-radius: 20px;
+    text-align: center;
+    border: 1px solid rgba(140, 82, 255, 0.3);
+    /* Purple border */
+    box-shadow: 0 0 30px rgba(140, 82, 255, 0.2);
+    transform: scale(0.8);
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 90%;
+    width: 400px;
+}
+
+.popup-overlay.active .popup-content {
+    transform: scale(1);
+}
+
+.success-icon {
+    font-size: 4rem;
+    color: #4ade80;
+    /* Green success color */
+    margin-bottom: 1.5rem;
+}
+
+.popup-content h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: white;
+}
+
+.popup-content p {
+    color: #b3b3b3;
+    margin-bottom: 2rem;
+}
+
+.close-popup-btn {
+    background: #8c52ff;
+    /* Accent purple */
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.close-popup-btn:hover {
+    background: #7a42ea;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(140, 82, 255, 0.4);
 }

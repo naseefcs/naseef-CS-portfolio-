@@ -86,3 +86,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// Contact Form Submission & Popup Logic
+var submitted = false;
+
+function showPopup() {
+    const popup = document.getElementById('confirmation-popup');
+    if (popup) {
+        popup.classList.add('active');
+        const form = document.getElementById('contactForm');
+        if (form) form.reset();
+        submitted = false;
+    }
+}
+
+function closePopup() {
+    const popup = document.getElementById('confirmation-popup');
+    if (popup) {
+        popup.classList.remove('active');
+    }
+}
+
