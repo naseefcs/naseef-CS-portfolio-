@@ -106,3 +106,78 @@ function closePopup() {
     }
 }
 
+
+// Background Animation Code
+(function() {
+    const canvas = document.getElementById('bgCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    let birds = [];
+
+    function init() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+        
+        // Initialize birds
+        birds = Array.from({ length: 5 }, () => ({
+            x: Math.random() * width,
+            y: Math.random() * (height / 2),
+            speed: 0.5 + Math.random(),
+            amplitude: Math.random() * 20
+        }));
+    }
+
+    function drawMountain(x, y, w, h, color) {
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + w / 2, y - h);
+        ctx.lineTo(x + w, y);
+        ctx.closePath();
+        ctx.fill();
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        // 1. Sky Background (Pink/Purple Gradient)
+        const skyGrad = ctx.createLinearGradient(0, 0, 0, height);
+        skyGrad.addColorStop(0, '#f9a8d4'); // Light pink
+        skyGrad.addColorStop(1, '#a855f7'); // Purple
+        ctx.fillStyle = skyGrad;
+        ctx.fillRect(0, 0, width, height);
+
+        // 2. Distant Mountains (Lighter)
+        drawMountain(width * 0.1, height * 0.7, width * 0.4, 200, '#d8b4fe');
+        drawMountain(width * 0.4, height * 0.7, width * 0.5, 250, '#c084fc');
+
+        // 3. The Water (Animated Glow)
+        const time = Date.now() * 0.002;
+        const waterGlow = 180 + Math.sin(time) * 20;
+        ctx.fillStyle = `rgb(236, 72, ${waterGlow})`; 
+        ctx.fillRect(0, height * 0.65, width, height * 0.35);
+
+        // 4. Foreground Slopes (Darker Purple/Indigo)
+        drawMountain(-width * 0.1, height, width * 0.6, 400, '#581c87');
+        drawMountain(width * 0.5, height, width * 0.7, 450, '#3b0764');
+
+        // 5. Animated Birds
+        ctx.fillStyle = '#000';
+        birds.forEach(bird => {
+            bird.x += bird.speed;
+            const birdY = bird.y + Math.sin(bird.x * 0.02) * 5;
+            if (bird.x > width) bird.x = -10;
+            ctx.fillRect(bird.x, birdY, 3, 2);
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', init);
+    init();
+    animate();
+})();
