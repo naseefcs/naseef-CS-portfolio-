@@ -1,4 +1,60 @@
+// Core Application State
+const state = {
+    scene: null,
+    camera: null,
+    renderer: null,
+    mouse: new THREE.Vector2(),
+    targetMouse: new THREE.Vector2(),
+    clock: new THREE.Clock(),
+    isMobile: window.innerWidth < 768,
+    scrollProgress: 0
+};
+
+// --- Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
+    // initThree();
+    initUI();
+    // animate();
+});
+
+function initThree() {
+    const canvas = document.getElementById('bg-canvas');
+    if (!canvas) return;
+
+    // Scene Setup
+    state.scene = new THREE.Scene();
+    
+    // Camera Setup - Perspective for depth
+    state.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    state.camera.position.z = 5;
+
+    // Renderer Setup
+    state.renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        antialias: true,
+        alpha: true
+    });
+    state.renderer.setSize(window.innerWidth, window.innerHeight);
+    state.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Simple Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    state.scene.add(ambientLight);
+
+    // Add Fluid Orb
+    state.fluidOrb = new FluidOrb();
+    state.scene.add(state.fluidOrb.mesh);
+
+    // Initial Resize
+    onWindowResize();
+
+    // Event Listeners
+    window.addEventListener('resize', onWindowResize);
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('scroll', onScroll);
+}
+
+function initUI() {
     // Mobile Menu Toggle
     const menuToggle = document.getElementById('mobile-menu');
     const navLinks = document.querySelector('.nav-links');
@@ -13,171 +69,260 @@ document.addEventListener('DOMContentLoaded', () => {
     // Close mobile menu when clicking a link
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', () => {
-            menuToggle.classList.remove('is-active');
-            navLinks.classList.remove('active');
+            menuToggle && menuToggle.classList.remove('is-active');
+            navLinks && navLinks.classList.remove('active');
         });
     });
 
-    // Smooth scrolling for anchor links
+    // Smooth scrolling for anchor links using GSAP
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth'
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                gsap.to(window, {
+                    duration: 1.5,
+                    scrollTo: targetId,
+                    ease: "power4.inOut"
                 });
             }
         });
     });
 
-    // Simple Intersection Observer for fade-in animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: "0px"
-    };
+    // Contact Form & Popup (Maintain existing logic)
+    window.submitted = false;
 
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
+    // Reveal Animations
+    initAnimations();
+}
+
+function initAnimations() {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Fade in sections
+    const sections = document.querySelectorAll('section, footer');
+    sections.forEach(section => {
+        gsap.from(section, {
+            scrollTrigger: {
+                trigger: section,
+                start: "top 80%",
+                toggleActions: "play none none reverse"
+            },
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            ease: "power3.out"
+        });
+    });
+
+    // Staggered cards reveal
+    const cards = document.querySelectorAll('.service-card, .project-card');
+    cards.forEach(card => {
+        gsap.from(card, {
+            scrollTrigger: {
+                trigger: card,
+                start: "top 85%",
+            },
+            opacity: 0,
+            y: 30,
+            duration: 0.8,
+            ease: "back.out(1.7)"
+        });
+    });
+}
+
+function onWindowResize() {
+    state.camera.aspect = window.innerWidth / window.innerHeight;
+    state.camera.updateProjectionMatrix();
+    state.renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function onMouseMove(e) {
+    state.targetMouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+    state.targetMouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+}
+
+function onScroll() {
+    const h = document.documentElement, 
+          b = document.body,
+          st = 'scrollTop',
+          sh = 'scrollHeight';
+    state.scrollProgress = (h[st]||b[st]) / ((h[sh]||b[sh]) - h.clientHeight);
+}
+
+// --- Animation Loop ---
+function animate() {
+    requestAnimationFrame(animate);
+    
+    const elapsedTime = state.clock.getElapsedTime();
+
+    // Update Fluid Orb
+    if (state.fluidOrb) {
+        state.fluidOrb.update(elapsedTime, state.mouse);
+    }
+
+    // Smooth Mouse Movement
+    state.mouse.x += (state.targetMouse.x - state.mouse.x) * 0.05;
+    state.mouse.y += (state.targetMouse.y - state.mouse.y) * 0.05;
+
+    // Apply Subtle Parallax to Camera
+    if (state.camera) {
+        state.camera.position.x += (state.mouse.x * 0.5 - state.camera.position.x) * 0.05;
+        state.camera.position.y += (state.mouse.y * 0.5 - state.camera.position.y) * 0.05;
+        state.camera.lookAt(0, 0, 0);
+    }
+
+    state.renderer.render(state.scene, state.camera);
+}
+
+// // --- Fluid Orb Implementation ---
+class FluidOrb {
+    constructor() {
+        // High segment count for smooth vertex displacement
+        const geometry = new THREE.SphereGeometry(1.5, 128, 128);
+
+        // Custom GLSL Shaders
+        const vertexShader = `
+            uniform float uTime;
+            uniform vec2 uMouse;
+            varying vec2 vUv;
+            varying float vNoise;
+
+            // Simplex 3D Noise function (Ashima Arts)
+            vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+            vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
+            vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+
+            float snoise(vec3 v) {
+                const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;
+                const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);
+                vec3 i  = floor(v + dot(v, C.yyy) );
+                vec3 x0 = v - i + dot(i, C.xxx) ;
+                vec3 g = step(x0.yzx, x0.xyz);
+                vec3 l = 1.0 - g;
+                vec3 i1 = min( g.xyz, l.zxy );
+                vec3 i2 = max( g.xyz, l.zxy );
+                vec3 x1 = x0 - i1 + C.xxx;
+                vec3 x2 = x0 - i2 + C.yyy;
+                vec3 x3 = x0 - D.yyy;
+                i = mod289(i);
+                vec4 p = permute( permute( permute(
+                           i.z + vec4(0.0, i1.z, i2.z, 1.0 ))
+                         + i.y + vec4(0.0, i1.y, i2.y, 1.0 ))
+                         + i.x + vec4(0.0, i1.x, i2.x, 1.0 ));
+                float n_ = 0.142857142857; // 1.0/7.0
+                vec3  ns = n_ * D.wyz - D.xzx;
+                vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+                vec4 x_ = floor(j * ns.z);
+                vec4 y_ = floor(j - 7.0 * x_ );
+                vec4 x = x_ *ns.x + ns.yyyy;
+                vec4 y = y_ *ns.x + ns.yyyy;
+                vec4 h = 1.0 - abs(x) - abs(y);
+                vec4 b0 = vec4( x.xy, y.xy );
+                vec4 b1 = vec4( x.zw, y.zw );
+                vec4 s0 = floor(b0)*2.0 + 1.0;
+                vec4 s1 = floor(b1)*2.0 + 1.0;
+                vec4 sh = -step(h, vec4(0.0));
+                vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;
+                vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;
+                vec3 p0 = vec3(a0.xy,h.x);
+                vec3 p1 = vec3(a0.zw,h.y);
+                vec3 p2 = vec3(a1.xy,h.z);
+                vec3 p3 = vec3(a1.zw,h.w);
+                vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+                p0 *= norm.x;
+                p1 *= norm.y;
+                p2 *= norm.z;
+                p3 *= norm.w;
+                vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+                m = m * m;
+                return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3) ) );
             }
+
+            void main() {
+                vUv = uv;
+
+                // Create noise based on position and time
+                float noise = snoise(vec3(position.x * 1.5, position.y * 1.5 + uTime * 0.5, position.z * 1.5 + uTime * 0.3));
+                
+                // Add mouse interaction to the noise
+                float mouseDist = distance(uv, uMouse * 0.5 + 0.5);
+                noise += smoothstep(0.5, 0.0, mouseDist) * 0.5;
+                
+                vNoise = noise;
+
+                // Displace vertices along normal
+                vec3 newPosition = position + normal * (noise * 0.3);
+
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+            }
+        `;
+
+        const fragmentShader = `
+            uniform float uTime;
+            varying vec2 vUv;
+            varying float vNoise;
+
+            void main() {
+                // Color Palette based on requested neon Purple and Blue
+                vec3 color1 = vec3(0.66, 0.33, 0.97); // #A855F7 (Purple)
+                vec3 color2 = vec3(0.23, 0.51, 0.96); // #3B82F6 (Blue)
+                vec3 color3 = vec3(0.05, 0.05, 0.1);  // Dark Base
+
+                // Mix colors based on UV and noise
+                float mixRatio = vUv.y + vNoise * 0.5 + sin(uTime * 0.5) * 0.2;
+                vec3 finalColor = mix(color1, color2, smoothstep(0.0, 1.0, mixRatio));
+
+                // Add rim glow effect
+                float rim = 1.0 - max(dot(normalize(vUv), vec2(0.5)), 0.0);
+                finalColor += vec3(0.3, 0.2, 0.8) * rim * vNoise;
+
+                gl_FragColor = vec4(finalColor, 1.0);
+            }
+        `;
+
+        this.material = new THREE.ShaderMaterial({
+            vertexShader,
+            fragmentShader,
+            uniforms: {
+                uTime: { value: 0 },
+                uMouse: { value: new THREE.Vector2() }
+            },
+            transparent: true,
+            wireframe: false
         });
-    }, observerOptions);
 
-    // Add fade-in classes to elements
-    const elementsToAnimate = document.querySelectorAll('.service-card, .project-card, .section-title, .hero-content');
-    elementsToAnimate.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-        observer.observe(el);
-    });
+        this.mesh = new THREE.Mesh(geometry, this.material);
+        
+        // Position orb slightly to the left behind the text, or center. Reference image has it slightly offset.
+        this.mesh.position.set(0, 0, 0); 
+    }
 
-    // Add visible class styling dynamically
-    const style = document.createElement('style');
-    style.innerHTML = `
-        .visible {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-        }
-    `;
-    document.head.appendChild(style);
-});
+    update(time, mouse) {
+        this.material.uniforms.uTime.value = time;
+        // Smooth mouse influence for the shader
+        this.material.uniforms.uMouse.value.lerp(mouse, 0.05);
+        
+        // Gentle rotation
+        this.mesh.rotation.y = time * 0.1;
+        this.mesh.rotation.z = time * 0.05;
+    }
+}
 
-// Sticky Column Headers Interaction
-document.addEventListener('DOMContentLoaded', () => {
-    const serviceCards = document.querySelectorAll('.service-card');
-
-    serviceCards.forEach(card => {
-        card.addEventListener('click', (e) => {
-            // Prevent default behavior if needed
-            // Toggle active class on the clicked card
-            // Close other cards? If we want accordion style logic:
-            serviceCards.forEach(c => {
-                if (c !== card) {
-                    c.classList.remove('active');
-                }
-            });
-
-            card.classList.toggle('active');
-        });
-    });
-});
-
-// Contact Form Submission & Popup Logic
-var submitted = false;
-
-function showPopup() {
+// Global scope functions for legacy HTML attributes
+window.showPopup = function() {
     const popup = document.getElementById('confirmation-popup');
     if (popup) {
         popup.classList.add('active');
         const form = document.getElementById('contactForm');
         if (form) form.reset();
-        submitted = false;
+        window.submitted = false;
     }
-}
+};
 
-function closePopup() {
+window.closePopup = function() {
     const popup = document.getElementById('confirmation-popup');
-    if (popup) {
-        popup.classList.remove('active');
-    }
-}
-
-
-// Background Animation Code
-(function() {
-    const canvas = document.getElementById('bgCanvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-
-    let width, height;
-    let birds = [];
-
-    function init() {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        canvas.width = width;
-        canvas.height = height;
-        
-        // Initialize birds
-        birds = Array.from({ length: 5 }, () => ({
-            x: Math.random() * width,
-            y: Math.random() * (height / 2),
-            speed: 0.5 + Math.random(),
-            amplitude: Math.random() * 20
-        }));
-    }
-
-    function drawMountain(x, y, w, h, color) {
-        ctx.fillStyle = color;
-        ctx.beginPath();
-        ctx.moveTo(x, y);
-        ctx.lineTo(x + w / 2, y - h);
-        ctx.lineTo(x + w, y);
-        ctx.closePath();
-        ctx.fill();
-    }
-
-    function animate() {
-        ctx.clearRect(0, 0, width, height);
-
-        // 1. Sky Background (Pink/Purple Gradient)
-        const skyGrad = ctx.createLinearGradient(0, 0, 0, height);
-        skyGrad.addColorStop(0, '#f9a8d4'); // Light pink
-        skyGrad.addColorStop(1, '#a855f7'); // Purple
-        ctx.fillStyle = skyGrad;
-        ctx.fillRect(0, 0, width, height);
-
-        // 2. Distant Mountains (Lighter)
-        drawMountain(width * 0.1, height * 0.7, width * 0.4, 200, '#d8b4fe');
-        drawMountain(width * 0.4, height * 0.7, width * 0.5, 250, '#c084fc');
-
-        // 3. The Water (Animated Glow)
-        const time = Date.now() * 0.002;
-        const waterGlow = 180 + Math.sin(time) * 20;
-        ctx.fillStyle = `rgb(236, 72, ${waterGlow})`; 
-        ctx.fillRect(0, height * 0.65, width, height * 0.35);
-
-        // 4. Foreground Slopes (Darker Purple/Indigo)
-        drawMountain(-width * 0.1, height, width * 0.6, 400, '#581c87');
-        drawMountain(width * 0.5, height, width * 0.7, 450, '#3b0764');
-
-        // 5. Animated Birds
-        ctx.fillStyle = '#000';
-        birds.forEach(bird => {
-            bird.x += bird.speed;
-            const birdY = bird.y + Math.sin(bird.x * 0.02) * 5;
-            if (bird.x > width) bird.x = -10;
-            ctx.fillRect(bird.x, birdY, 3, 2);
-        });
-
-        requestAnimationFrame(animate);
-    }
-
-    window.addEventListener('resize', init);
-    init();
-    animate();
-})();
+    if (popup) popup.classList.remove('active');
+};

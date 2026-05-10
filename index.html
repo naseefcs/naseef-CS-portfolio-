@@ -4,72 +4,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Naseef CS - UI/UX Designer & Graphic Designer</title>
+    <title>Naseef CS | Futuristic 3D Portfolio</title>
     <meta name="description"
-        content="Portfolio of Naseef CS, a Senior UI/UX Designer and Graphic Designer specializing in accessible, user-centric digital experiences.">
+        content="High-end futuristic 3D portfolio of Naseef CS, merging deep ocean and outer space themes.">
 
-    <!-- Fonts -->
+    <!-- Google Fonts: Syne (Geometric for Logo), Syncopate (Wide Sans-Serif for Titles) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Outfit:wght@400;600;800;900&family=Syne:wght@700;800&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <canvas id="bgCanvas"></canvas>
+    <!-- Glowing UI Background -->
+    <div class="global-glow glow-top-left"></div>
+    <div class="global-glow glow-center"></div>
+    <div class="global-glow glow-bottom-left"></div>
+    <div class="global-glow glow-projects"></div>
 
     <!-- Navigation -->
-    <nav class="navbar">
-        <div class="logo">Naseef CS</div>
-        <div class="menu-toggle" id="mobile-menu">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
+    <nav class="navbar" id="navbar">
+        <a href="#home" class="logo">Naseef CS.</a>
+        
+        <div class="nav-right">
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <a href="#contact" class="btn-cta">Learn More</a>
+            
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
         </div>
-        <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="gallery.html">Gallery</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
+    <!-- Hero Section (Centered Layout matching Figma) -->
+    <header id="home" class="hero hero-section">
+        <!-- Large Background Text -->
+        <div class="bg-large-text">S W E Y - N &nbsp; V I S U A L S</div>
+
+        <!-- Dynamic Content overlay -->
         <div class="hero-content">
-            <span class="greeting">Hello! I Am <span class="highlight-name">Naseef C S</span></span>
-            <div class="hero-main-text">
-                <div class="avatar-container">
-                    <img src="assets/avatar.png" alt="Naseef CS Avatar" class="avatar-img">
-                </div>
-                <h1>Judges a book by its <span class="highlight">cover...</span></h1>
-                <p class="mini-subtext">Because if the cover does not impress you what else can?</p>
+            <p class="greeting"><span class="line"></span> Hello! I Am <span class="highlight-text">Naseef C S</span></p>
+            
+            <div class="avatar-container">
+                <!-- Using placeholder if avatar.png is missing, but assuming it exists -->
+                <img src="assets/avatar.png" alt="Naseef Profile" class="avatar-img" onerror="this.src='https://ui-avatars.com/api/?name=Naseef+CS&background=random&size=200'">
             </div>
 
-            <div class="hero-description">
-                <p class="role">I'm a UI/UX Designer & Graphic Designer.</p>
+            <div class="hero-text-block">
+                <p class="pre-heading">A Designer who</p>
+                <h1 class="main-heading">Judges a book by its <span class="circled">cover...</span></h1>
+                
                 <div class="hero-actions">
-                    <a href="mailto:naseefCS@gmail.com" class="btn-primary">Hire Me</a>
-                    <a href="#" class="btn-secondary">Download CV</a>
+                    <a href="#" class="btn-primary">Resume</a>
+                    <a href="#contact" class="btn-outline">CC</a>
                 </div>
-                <p class="subtext">Currently working as a <a
-                        href="https://www.instagram.com/na.x_eef?igsh=ZDloaTIxOW8wczhs" target="_blank"
-                        class="green-text">Freelance</a> UI/UX and Graphic
-                    Designer.
-                </p>
-                <p class="bio-text">A self-taught designer functioning in the industry for 3+ years now. I make
-                    meaningful and delightful digital products that create an equilibrium between user needs and
-                    business goals.</p>
-            </div>
 
-            <div class="bg-text">VISUALS</div>
+                <div class="hero-bio">
+                    <p class="status">Currently, I'm a graphic designer & <span class="text-green">Freelancer.</span></p>
+                    <p class="description">A self-taught graphic designer, functioning in the industry for 2+ years now. I make meaningful and delightful digital products that create an equilibrium between user needs and business goals.</p>
+                </div>
+            </div>
         </div>
-    </section>
+    </header>
 
     <!-- Services Section -->
     <section id="services" class="work-section">
@@ -166,40 +178,32 @@
         <div class="project-card ecommerce-web">
             <div class="project-info">
                 <span class="project-tag">Featured Project</span>
-                <h3>Interactive & Animated <br> Website</h3>
-                <p>An experimental animated website concept created to practice motion, layout balance, and brand
-                    storytelling using bold colors and smooth UI animations.</p>
+                <h3>Interactive & Animated<br>Website</h3>
+                <p>An experimental animated website concept created to practice motion, layout balance, and brand storytelling using bold colors and smooth UI animations.</p>
                 <div class="project-meta">
                     <span class="p-badge">UI/UX Web Design</span>
                     <span class="p-badge">Concept</span>
                 </div>
-                <br>
-                <a href="https://www.figma.com/proto/YmFwYmsWwjedCTt1PLFD2J/Untitled?page-id=0%3A1&node-id=1-3&starting-point-node-id=1%3A3&scaling=min-zoom&content-scaling=fixed&t=2ZpFNtMJ6He1zQeh-1"
-                    class="project-btn" target="_blank">View This Project</a>
+                <a href="https://www.figma.com/proto/..." class="project-btn" target="_blank">View This Project</a>
             </div>
             <div class="project-image">
-                <img src="assets/packaging-design.png" alt="Packaging Design"
-                    style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
+                <img src="assets/packaging-design.png" alt="Packaging Design">
             </div>
         </div>
 
         <div class="project-card product-web">
-            <div class="project-image">
-                <img src="assets/malted-drinks.png" alt="Malted Drinks Website"
-                    style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
-            </div>
             <div class="project-info right-align">
                 <span class="project-tag">Featured Project</span>
-                <h3>Malted Drinks <br> Website</h3>
-                <p>I built a vibrant website for Malted Drinks - blending bold colors to give a mouth-watering
-                    experience. Experience magical flavors jump from your screen!</p>
+                <h3>Malted Drinks<br>Website</h3>
+                <p>I built a vibrant website for Malted Drinks - blending bold colors to give a mouth-watering experience. Experience magical flavors jump from your screen!</p>
                 <div class="project-meta">
                     <span class="p-badge">Concept</span>
                     <span class="p-badge">Web Design</span>
                 </div>
-                <br>
-                <a href="https://www.figma.com/proto/YmFwYmsWwjedCTt1PLFD2J/Untitled?page-id=0%3A1&node-id=1-3&starting-point-node-id=1%3A3&scaling=min-zoom&content-scaling=fixed&t=XWqep9jDKQAk5hqj-1"
-                    class="project-btn" target="_blank">View This Project</a>
+                <a href="https://www.figma.com/proto/..." class="project-btn" target="_blank">View This Project</a>
+            </div>
+            <div class="project-image">
+                <img src="assets/malted-drinks.png" alt="Malted Drinks Website">
             </div>
         </div>
 
