@@ -217,37 +217,32 @@ ul {
 
 /* Hero Section */
 .menu-toggle {
-    display: none; /* hide on larger screens */
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    padding: 0.5rem;
-}
-
-.menu-toggle {
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: space-between;
-    width: 24px;
-    height: 18px;
+    width: 32px;
+    height: 22px;
     cursor: pointer;
-    padding: 0.5rem;
+    background: transparent;
+    border: none;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .menu-toggle .bar {
     width: 100%;
-    height: 2px;
+    height: 4px;
     background: #fff;
-    border-radius: 1px;
-    transition: background 0.3s ease;
+    border-radius: 10px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 /* Hover and active effects for the hamburger */
 .menu-toggle:hover .bar {
-    background: #aaa;
+    background: #e0e0e0;
 }
 .menu-toggle:active .bar {
-    background: #ccc;
+    background: #b0b0b0;
 }
 
 .hero-section {
@@ -804,32 +799,25 @@ footer {
         right: 5%;
         top: 2rem;
     }
-    
-    .bar {
-        height: 2px;
-        width: 25px;
-        background: white;
-        margin: 5px 0;
-        transition: 0.3s ease;
+
+    /* Hamburger Animation */
+    .menu-toggle.is-active .bar:nth-child(1) {
+        transform: translateY(9px) rotate(45deg);
+    }
+
+    .menu-toggle.is-active .bar:nth-child(2) {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    .menu-toggle.is-active .bar:nth-child(3) {
+        transform: translateY(-9px) rotate(-45deg);
     }
 
     .nav-links a {
         font-size: 1.5rem;
         display: block;
         width: 100%;
-    }
-
-    /* Hamburger Animation */
-    .menu-toggle.is-active .bar:nth-child(1) {
-        transform: translateY(7px) rotate(45deg);
-    }
-
-    .menu-toggle.is-active .bar:nth-child(2) {
-        opacity: 0;
-    }
-
-    .menu-toggle.is-active .bar:nth-child(3) {
-        transform: translateY(-7px) rotate(-45deg);
     }
 
     /* Hero Section Mobile Adjustments */
@@ -1003,12 +991,6 @@ footer {
     .menu-toggle {
         display: flex;
         z-index: 2001;
-    }
-    .bar {
-        height: 2px;
-        width: 25px;
-        background: white;
-        margin: 5px 0;
     }
 }
 
