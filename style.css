@@ -832,6 +832,10 @@ footer {
         display: none; /* Hide sidebar on small screens */
     }
 
+    .bg-large-text {
+        display: none; /* Hide background text on mobile to improve contrast and readability */
+    }
+
     .hero-content {
         display: flex;
         flex-direction: column;
@@ -840,31 +844,55 @@ footer {
         text-align: center;
         height: auto;
         min-height: 100vh;
-        padding-top: 6rem;
+        padding: 6rem 1rem 4rem;
+        box-sizing: border-box;
     }
 
-    .main-title {
-        position: relative;
-        left: 0;
-        top: 0;
-        transform: none;
-        font-size: clamp(3rem, 15vw, 6rem);
+    .greeting {
+        justify-content: center;
+        width: 100%;
+        margin-bottom: 1.5rem;
+    }
+
+    .greeting .line {
+        display: none; /* Hide leading line to center greeting text */
+    }
+
+    .avatar-container {
+        margin: 0 0 1.5rem 0;
+    }
+
+    .avatar-img {
+        width: 150px;
+        height: 150px;
+    }
+
+    .pre-heading {
+        font-size: 1.1rem;
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    .main-heading {
+        font-size: clamp(2rem, 7vw, 2.8rem);
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+        padding: 0 10px;
+    }
+
+    .hero-actions {
         margin-bottom: 2rem;
     }
 
-    .hero-description {
-        position: relative;
-        right: 0;
-        bottom: 0;
-        max-width: 100%;
+    .hero-bio {
         text-align: center;
+        padding: 0 10px;
+        width: 100%;
     }
 
-    .hero-description p {
-        border-right: none;
-        padding-right: 0;
-        border-bottom: 2px solid var(--accent-purple);
-        padding-bottom: 1.5rem;
+    .hero-bio .description {
+        font-size: 0.9rem;
+        line-height: 1.6;
     }
 
     /* Orbital System Scale Down */
