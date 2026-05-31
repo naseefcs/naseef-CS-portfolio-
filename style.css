@@ -833,7 +833,11 @@ footer {
     }
 
     .bg-large-text {
-        display: none; /* Hide background text on mobile to improve contrast and readability */
+        display: block; /* Show faint background text */
+        font-size: clamp(1.8rem, 8vw, 3.2rem);
+        top: 68%;
+        opacity: 0.8;
+        color: rgba(255, 255, 255, 0.015);
     }
 
     .hero-content {
@@ -844,39 +848,45 @@ footer {
         text-align: center;
         height: auto;
         min-height: 100vh;
-        padding: 6rem 1rem 4rem;
+        padding: 7rem 1rem 4rem;
         box-sizing: border-box;
     }
 
     .greeting {
+        display: flex;
         justify-content: center;
+        align-items: center;
         width: 100%;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
+        gap: 12px;
     }
 
     .greeting .line {
-        display: none; /* Hide leading line to center greeting text */
+        display: inline-block;
+        width: 25px;
+        height: 1px;
+        background: var(--text-secondary);
     }
 
     .avatar-container {
-        margin: 0 0 1.5rem 0;
+        margin: 0 0 1rem 0;
     }
 
     .avatar-img {
-        width: 150px;
-        height: 150px;
+        width: 160px;
+        height: 160px;
     }
 
     .pre-heading {
         font-size: 1.1rem;
         margin-top: 0;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.2rem;
     }
 
     .main-heading {
-        font-size: clamp(2rem, 7vw, 2.8rem);
-        line-height: 1.2;
-        margin-bottom: 1.5rem;
+        font-size: clamp(2rem, 7.5vw, 2.8rem);
+        line-height: 1.25;
+        margin-bottom: 2rem;
         padding: 0 10px;
     }
 
