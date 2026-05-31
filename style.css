@@ -46,15 +46,15 @@ body {
     left: 10%;
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, transparent 70%);
 }
 
 .glow-center {
     top: 40%;
-    left: 40%;
+    left: 50%;
     width: 800px;
     height: 800px;
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, transparent 70%);
     transform: translate(-50%, -50%);
 }
 
@@ -63,7 +63,7 @@ body {
     left: -10%;
     width: 700px;
     height: 700px;
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, transparent 70%);
 }
 
 .glow-projects {
@@ -71,10 +71,43 @@ body {
     right: 5%;
     width: 700px;
     height: 700px;
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, transparent 70%);
 }
 
 /* Base Typography */
+.purple-glow, .pink-glow, .blue-glow, .purple-dark-glow {
+    position: relative;
+}
+
+.purple-glow::before, .pink-glow::before, .blue-glow::before, .purple-dark-glow::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140%;
+    height: 140%;
+    z-index: -1;
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+.purple-glow::before {
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.25) 0%, transparent 70%);
+}
+
+.pink-glow::before {
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.2) 0%, transparent 70%);
+}
+
+.blue-glow::before {
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
+}
+
+.purple-dark-glow::before {
+    background: radial-gradient(circle, rgba(140, 82, 255, 0.2) 0%, transparent 70%);
+}
+
 h1, h2, h3 {
     font-family: var(--font-heading);
     letter-spacing: -0.02em;
@@ -131,20 +164,37 @@ ul {
 .nav-links {
     display: flex;
     list-style: none;
-    gap: 2.5rem;
+    gap: 1rem;
 }
 
 .nav-links a {
+    display: inline-block;
+    padding: 0.6rem 1.5rem;
     font-size: 0.9rem;
     font-weight: 500;
     color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 50px;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    transition: color 0.3s ease;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform: translateY(0);
 }
 
 .nav-links a:hover {
     color: #fff;
+    background: rgba(168, 85, 247, 0.15);
+    border-color: rgba(168, 85, 247, 0.4);
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(168, 85, 247, 0.25);
+}
+
+.nav-links a:active {
+    transform: translateY(3px) scale(0.96);
+    box-shadow: 0 2px 8px rgba(168, 85, 247, 0.15);
+    transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .btn-cta {
@@ -166,6 +216,67 @@ ul {
 }
 
 /* Hero Section */
+.menu-toggle {
+    display: none; /* hide on larger screens */
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.menu-dots {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 12px; /* three vertical dots */
+}
+
+.menu-dots .dot {
+    width: 4px;
+    height: 4px;
+    background: #fff; /* white color matching dark/purple theme */
+    border-radius: 50%;
+    display: block;
+}
+
+.menu-toggle .line {
+    width: 12px;
+    height: 2px;
+    background: #fff;
+    display: block;
+}
+
+/* Responsive: hide menu items on small screens, show toggle */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none; /* hide the horizontal links */
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: rgba(0,0,0,0.9);
+        padding: 1rem;
+        gap: 1rem;
+    }
+    .nav-links.active {
+        display: flex;
+    }
+    .menu-toggle {
+        display: flex;
+    }
+}
+
+/* Hover and active effects for the toggle */
+.menu-toggle:hover .line {
+    background: #aaa;
+    transform: translateY(-2px);
+    transition: all 0.2s ease;
+}
+.menu-toggle:active .line {
+    transform: translateY(2px);
+    transition: all 0.1s ease;
+}
+
 .hero-section {
     position: relative;
     min-height: 100vh;
@@ -238,7 +349,7 @@ ul {
     width: 200px; /* Increased size to match reference image proportion */
     height: 200px;
     object-fit: contain; /* Prevent cropping, it's a transparent png likely */
-    filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
+    filter: drop-shadow(0 0 50px rgba(168, 85, 247, 0.7));
 }
 
 .hero-text-block {
@@ -475,7 +586,7 @@ ul {
     color: white;
 }
 
-.center-logo {
+.glowing-orb {
     font-size: 1.5rem;
     /* Reduced from 2rem */
     font-weight: 700;
@@ -489,7 +600,7 @@ ul {
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    box-shadow: 0 0 30px rgba(140, 82, 255, 0.3);
+    box-shadow: 0 0 60px 20px rgba(168, 85, 247, 0.5);
 }
 
 
@@ -528,6 +639,7 @@ ul {
     padding: 0;
     position: relative;
     display: flex;
+    box-shadow: 0 0 80px 10px rgba(168, 85, 247, 0.25);
 }
 
 .project-image img {

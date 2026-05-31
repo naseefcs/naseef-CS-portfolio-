@@ -74,21 +74,17 @@ function initUI() {
         });
     });
 
-    // Smooth scrolling for anchor links using GSAP
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                gsap.to(window, {
-                    duration: 1.5,
-                    scrollTo: targetId,
-                    ease: "power4.inOut"
-                });
-            }
-        });
-    });
+    // Smooth scrolling for anchor links is handled natively via CSS scroll-behavior: smooth
+    // document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    //     anchor.addEventListener('click', function (e) {
+    //         e.preventDefault();
+    //         const targetId = this.getAttribute('href');
+    //         const targetElement = document.querySelector(targetId);
+    //         if (targetElement) {
+    //             targetElement.scrollIntoView({ behavior: 'smooth' });
+    //         }
+    //     });
+    // });
 
     // Contact Form & Popup (Maintain existing logic)
     window.submitted = false;
