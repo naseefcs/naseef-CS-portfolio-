@@ -224,57 +224,30 @@ ul {
     padding: 0.5rem;
 }
 
-.menu-dots {
+.menu-toggle {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 12px; /* three vertical dots */
+    width: 24px;
+    height: 18px;
+    cursor: pointer;
+    padding: 0.5rem;
 }
 
-.menu-dots .dot {
-    width: 4px;
-    height: 4px;
-    background: #fff; /* white color matching dark/purple theme */
-    border-radius: 50%;
-    display: block;
-}
-
-.menu-toggle .line {
-    width: 12px;
+.menu-toggle .bar {
+    width: 100%;
     height: 2px;
     background: #fff;
-    display: block;
+    border-radius: 1px;
+    transition: background 0.3s ease;
 }
 
-/* Responsive: hide menu items on small screens, show toggle */
-@media (max-width: 768px) {
-    .nav-links {
-        display: none; /* hide the horizontal links */
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        right: 0;
-        background: rgba(0,0,0,0.9);
-        padding: 1rem;
-        gap: 1rem;
-    }
-    .nav-links.active {
-        display: flex;
-    }
-    .menu-toggle {
-        display: flex;
-    }
-}
-
-/* Hover and active effects for the toggle */
-.menu-toggle:hover .line {
+/* Hover and active effects for the hamburger */
+.menu-toggle:hover .bar {
     background: #aaa;
-    transform: translateY(-2px);
-    transition: all 0.2s ease;
 }
-.menu-toggle:active .line {
-    transform: translateY(2px);
-    transition: all 0.1s ease;
+.menu-toggle:active .bar {
+    background: #ccc;
 }
 
 .hero-section {
