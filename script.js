@@ -57,22 +57,24 @@ function initThree() {
 function initUI() {
     // Mobile Menu Toggle
     const menuToggle = document.getElementById('mobile-menu');
-    const navLinks = document.querySelector('.nav-links');
+    const navMenu = document.querySelector('.nav-right') || document.querySelector('.nav-links');
 
-    if (menuToggle) {
+    if (menuToggle && navMenu) {
         menuToggle.addEventListener('click', () => {
             menuToggle.classList.toggle('is-active');
-            navLinks.classList.toggle('active');
+            navMenu.classList.toggle('active');
         });
     }
 
     // Close mobile menu when clicking a link
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', () => {
-            menuToggle && menuToggle.classList.remove('is-active');
-            navLinks && navLinks.classList.remove('active');
+    if (navMenu) {
+        navMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle && menuToggle.classList.remove('is-active');
+                navMenu.classList.remove('active');
+            });
         });
-    });
+    }
 
     // Smooth scrolling for anchor links is handled natively via CSS scroll-behavior: smooth
     // document.querySelectorAll('a[href^="#"]').forEach(anchor => {
